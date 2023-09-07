@@ -1,11 +1,11 @@
 process doTrimmomatic{
-  label 'fq01_trimmomatic'
+  label 'mg01_trimmomatic'
   conda params.doTrimmomatic.conda
   cpus params.resources.doTrimmomatic.cpus
   memory params.resources.doTrimmomatic.mem
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/fq01_trimmomatic", mode: 'symlink'
+  publishDir "$results_dir/mg01_trimmomatic", mode: 'symlink'
   input:
   tuple(val(illumina_id), val(fastq))
   val illuminaclip
@@ -31,13 +31,13 @@ process doTrimmomatic{
 }
 
 process getFastQCIllumina{
-  label 'fq02_fastqc'
+  label 'mg02_fastqc'
   conda params.getFastQCIllumina.conda
   cpus params.resources.getFastQCIllumina.cpus
   memory params.resources.getFastQCIllumina.mem
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/fq02_fastqc", mode: 'symlink'
+  publishDir "$results_dir/mg02_fastqc", mode: 'symlink'
   input:
   path fastq
   
@@ -51,13 +51,13 @@ process getFastQCIllumina{
 }
 
 process alignBowtie2{
-  label 'fq03_bowtie'
+  label 'mg03_bowtie'
   conda params.alignBowtie2.conda
   cpus params.resources.alignBowtie2.cpus
   memory params.resources.alignBowtie2.mem
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/fq03_bowtie", mode: 'symlink'
+  publishDir "$results_dir/mg03_bowtie", mode: 'symlink'
   input:
   val index
   val options
@@ -77,13 +77,13 @@ process alignBowtie2{
 }
 
 process samtoolsSort{
-  label 'fq04_sortbam'
+  label 'mg04_sortbam'
   conda params.samtoolsSort.conda
   cpus params.resources.samtoolsSort.cpus
   memory params.resources.samtoolsSort.mem
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/fq04_sortbam", mode: 'symlink'
+  publishDir "$results_dir/mg04_sortbam", mode: 'symlink'
   input:
   tuple(val(illumina_id), path(bam))
   
@@ -99,13 +99,13 @@ process samtoolsSort{
 }
 
 process removeHumanReads{
-  label 'fq05_filtreads'
+  label 'mg05_filtreads'
   conda params.removeHumanReads.conda
   cpus params.resources.removeHumanReads.cpus
   memory params.resources.removeHumanReads.mem
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/fq05_filtreads", mode: 'symlink'
+  publishDir "$results_dir/mg05_filtreads", mode: 'symlink'
   input:
   tuple(val(illumina_id), path(bam), path(bai), val(fastq))
   
@@ -129,6 +129,128 @@ process removeHumanReads{
   '''
 }
 
+
+process callKraken2{
+  label 'mg06_kraken2'
+  conda params.callKraken2.conda
+  cpus params.resources.callKraken2.cpus
+  memory params.resources.callKraken2.mem
+  errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
+  maxRetries 10
+  publishDir "$results_dir/mg06_kraken2", mode: 'symlink'
+  input:
+  path k2database
+  val confidence
+  tuple(val(illumina_id), val(fastq))
+
+  output:
+  tuple(val(illumina_id), path("*standard.kraken2"), path("*.standard.kraken2.report") ,path("*tx.fastq.gz"), path("*kraken2.err"))
+  
+
+  shell:
+  '''
+  outfile=!{illumina_id}.standard.kraken2
+  report=!{illumina_id}.standard.kraken2.report
+  unclassified=$(basename -s .fastq.gz !{fastq[0]})
+  summary=!{illumina_id}.standard.kraken2.err
+
+  kraken2 --db !{k2database} \
+        --confidence !{confidence} \
+        --threads !{params.resources.callKraken2.cpus} \
+        --unclassified-out $unclassified#.tx.fastq \
+        --paired !{fastq[0]} !{fastq[1]} \
+        --output $outfile \
+        --report $report 2> $summary
+  pigz -p 4 $unclassified'_1.tx.fastq' $unclassified'_2.tx.fastq'
+
+  '''
+}
+
+process callBracken{
+  label 'mg07_Bracken'
+  conda params.callBracken.conda
+  cpus params.resources.callBracken.cpus
+  memory params.resources.callBracken.mem
+  errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
+  maxRetries 10
+  publishDir "$results_dir/mg07_Bracken", mode: 'symlink'
+  input:
+  path k2database
+  val threshold
+  val readlen
+  tuple(val(illumina_id), path(k2report), val(taxonomy_level_name), val(taxonomy_level_param))
+
+  output:
+  tuple(val(illumina_id), val(taxonomy_level_name), path("*.bracken.txt"), path("*.bracken.report.txt"), path("*bracken.err"))
+  
+
+  shell:
+  '''
+  outfile=!{illumina_id}.!{taxonomy_level_name}.bracken.txt
+  report=!{illumina_id}.!{taxonomy_level_name}.bracken.report.txt
+  summary=!{illumina_id}.!{taxonomy_level_name}.bracken.err
+
+  bracken -d !{k2database} \
+        -i !{k2report} \
+        -o $outfile \
+        -w $report \
+        -r !{readlen}  \
+        -t !{threshold} \
+        -l !{taxonomy_level_param} > $summary
+
+  '''
+}
+
+process braken2mpa{
+  label 'mg08_mpa'
+  conda params.braken2mpa.conda
+  cpus params.resources.braken2mpa.cpus
+  memory params.resources.braken2mpa.mem
+  errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
+  maxRetries 10
+  publishDir "$results_dir/mg08_mpa", mode: 'symlink'
+  input:
+  tuple(val(illumina_id), val(taxonomy_level_name), path(bracken_report))
+
+  output:
+  tuple(val(illumina_id), val(taxonomy_level_name), path("*.mpa.txt"))
+  
+
+  shell:
+  '''
+  outfile=$(basename -s .txt !{bracken_report}).mpa.txt
+  kreport2mpa.py -r !{bracken_report} -o $outfile --display-header
+  '''
+}
+
+
+process combineMpa{
+  label 'mg09_combinempa'
+  conda params.combineMpa.conda
+  cpus params.resources.combineMpa.cpus
+  memory params.resources.combineMpa.mem
+  errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
+  maxRetries 10
+  publishDir "$results_dir/mg09_combinempa", mode: 'symlink'
+  input:
+  tuple(val(taxonomy_level_name), val(mpa), val(letter))
+
+  output:
+  tuple(val(taxonomy_level_name), path("*.mpa.combined.txt"), path("*.mpa.combined.clean1.txt"), path("*.mpa.combined.clean2.txt"))
+  
+
+  shell:
+  '''
+  outfile=!{taxonomy_level_name}.mpa.combined.txt
+  outfile2=!{taxonomy_level_name}.mpa.combined.clean1.txt
+  outfile3=!{taxonomy_level_name}.mpa.combined.clean2.txt
+
+  combine_mpa.py -i !{mpa} -o $outfile
+  grep -E "(!{letter}__)|(#Classification)" $outfile > $outfile2
+  sed -e 's/.species.bracken.report.txt//g' $outfile2 > $outfile3
+
+  '''
+}
 
 workflow {
 
@@ -180,6 +302,41 @@ workflow {
         ch_fastq_filtered = ch_fastq_processed_paired
   }
 
+  //Call Kraken2
+  callKraken2(params.callKraken2.k2database,
+            params.callKraken2.confidence,
+            ch_fastq_filtered
+  )
+  ch_kraken2_output = callKraken2.out
+   // .view{"Kraken2 output: $it"}
+
+  //Call Bracken
+  ch_bracken_input = ch_kraken2_output
+        .map{it -> tuple(it[0], it[2])}
+        .combine(Channel.of(['species', 'S'],['genus', 'G'],['phylum', 'P']))
+        //.view{"Bracken input: $it"}
+  callBracken(params.callKraken2.k2database,
+        params.callBracken.threshold,
+        params.callBracken.readlen,
+        ch_bracken_input
+  )
+  ch_bracken_output = callBracken.out
+    //.view{"Bracken output: $it"}
+
+ //Transform to mpa and merge
+  ch_transform2mpa_input = ch_bracken_output
+     .map{it -> tuple(it[0], it[1], it[3])}
+  braken2mpa(ch_transform2mpa_input)
+  ch_transform2mpa_output = braken2mpa.out
+    //.view{"Transform to MPA output: $it"}
+  ch_combineMpa_input = ch_transform2mpa_output
+     .map{it -> tuple(it[1], it[2])}
+     .groupTuple()
+     .map{it -> tuple(it[0], it[1].join(' '), it[0][0])}
+     .view{"Combine MPA input: $it"}
+  combineMpa(ch_combineMpa_input)
+  ch_combineMpa_output = combineMpa.out
+     .view{"Combine MPA output: $it"}
 
   // FastQC STEPS
   //Initialize channels 
