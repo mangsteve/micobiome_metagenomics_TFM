@@ -13,7 +13,7 @@ process doTrimmomatic{
   val minlen
   
   output:
-  tuple(val(illumina_id), path('*.trimmed.fastq.gz'), path('*.trimmed.single.fastq.gz'), path('*.trimlog'))
+  tuple(val(illumina_id), path('*.trimmed.fastq.gz'), path('*.trimmed.single.fastq.gz'), path('*.trimlog'), path('*.trimlog.out'))
 
   shell:
   '''
@@ -26,7 +26,7 @@ process doTrimmomatic{
         !{illumina_id}_2.trimmed.single.fastq.gz \
         ILLUMINACLIP:!{illuminaclip} \
         SLIDINGWINDOW:!{slidingwindow} \
-        MINLEN:!{minlen}
+        MINLEN:!{minlen} 2> !{illumina_id}.trimlog.out
   '''
 }
 
@@ -252,6 +252,35 @@ process combineMpa{
   '''
 }
 
+process multiQC{
+  label 'mg10_multiqc'
+  conda params.multiQC.conda
+  cpus params.resources.multiQC.cpus
+  memory params.resources.multiQC.mem
+  errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
+  maxRetries 10
+  publishDir "$results_dir/mg10_multiqc", mode: 'symlink'
+  input:
+    path yaml
+    path ch_fastqc
+    path trim_qc
+    path bowtie2_err
+    path kraken_err
+    path bracken_err
+
+  output:
+  path("multiqc_report.html")
+  path("multiqc_data")
+  
+
+  shell:
+  '''
+  mv !{yaml} multiqc_config.yaml
+  multiqc .  
+  '''
+}
+
+
 workflow {
 
   ch_rawfastq = Channel
@@ -333,10 +362,10 @@ workflow {
      .map{it -> tuple(it[1], it[2])}
      .groupTuple()
      .map{it -> tuple(it[0], it[1].join(' '), it[0][0])}
-     .view{"Combine MPA input: $it"}
+     //.view{"Combine MPA input: $it"}
   combineMpa(ch_combineMpa_input)
   ch_combineMpa_output = combineMpa.out
-     .view{"Combine MPA output: $it"}
+     //.view{"Combine MPA output: $it"}
 
   // FastQC STEPS
   //Initialize channels 
@@ -364,5 +393,20 @@ workflow {
     //.view{ "getFastQCIllumina - FastQC reports: $it" }
     ch_fastqc = getFastQCIllumina.out
   }
+
+  //MultiQC
+  fastqc_coll = ch_fastqc.collect().ifEmpty([])
+  trim_qc = ch_fastq_processed.map{it -> it[4]}.collect().ifEmpty([])
+  bowtie2_err = ch_alignment_output.map{it -> it[2]}.collect().ifEmpty([])
+  kraken_err = ch_kraken2_output.map{it -> it[2]}.collect().ifEmpty([])
+  bracken_err = ch_bracken_output.map{it -> it[4]}.collect().ifEmpty([])
+  multiQC(params.multiQC.configyaml,
+            fastqc_coll, 
+            trim_qc, 
+            bowtie2_err, 
+            kraken_err, 
+            bracken_err
+            )
+  
 
 }
