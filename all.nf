@@ -231,7 +231,7 @@ process combineMpa{
   memory params.resources.combineMpa.mem
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/mg09_combinempa", mode: 'symlink'
+  publishDir "$results_dir/mg09_combinempa", mode: 'copy'
   input:
   tuple(val(taxonomy_level_name), val(mpa), val(letter))
 
@@ -259,7 +259,7 @@ process multiQC{
   memory params.resources.multiQC.mem
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/mg10_multiqc", mode: 'symlink'
+  publishDir "$results_dir/mg10_multiqc", mode: 'copy'
   input:
     path yaml
     path ch_fastqc
@@ -407,6 +407,4 @@ workflow {
             kraken_err, 
             bracken_err
             )
-  
-
 }
