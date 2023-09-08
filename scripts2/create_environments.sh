@@ -8,22 +8,21 @@ conda install -c bioconda trimmomatic
 
 conda create --name bowtie2-env python=3.10
 conda activate bowtie2-env
-conda install -c bioconda bowtie2
-conda install -c bioconda samtools
+conda install -c bioconda bowtie2 samtools
 
 conda create --name bwa-env python=3.10
 conda activate bwa-env
 conda install -c bioconda bwa bwa-mem2 samtools
 
-conda create --name kraken-env python=3.10
-conda activate kraken-env
-conda install -c bioconda kraken 
-conda install -c bioconda krakentools 
+#conda create --name kraken-env python=3.10
+#conda activate kraken-env
+#conda install -c bioconda kraken 
+#conda install -c bioconda krakentools 
 
 conda create --name kraken2-env python=3.10
 conda activate kraken2-env
 conda install -c bioconda kraken2
-conda install -c bioconda krakentools 
+#conda install -c bioconda krakentools 
 
 conda create --name bracken-env python=3.10
 conda activate bracken-env
@@ -31,7 +30,7 @@ conda install -c bioconda bracken
 
 conda create --name krona-env python=3.10
 conda activate krona-env
-conda install -c bioconda krona krakentools
+conda install -c bioconda krona
 
 conda create --name multiqc-env python=3.10
 conda activate multiqc-env
