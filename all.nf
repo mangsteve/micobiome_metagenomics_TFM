@@ -506,11 +506,12 @@ workflow {
 
 //Humann3. First concatenate fastq and then call the humann3 pipeline
 //ch_fastq_filtered.view{ "Humann3 input: $it" }
+concatFastq(ch_fastq_filtered)
+ch_concat_fastq = concatFastq.out
+    .view{ "concat fastq output: $it" }
 if(params.resources.doHumann3.do_humann){
 
-    concatFastq(ch_fastq_filtered)
-    ch_concat_fastq = concatFastq.out
-        //.view{ "concat fastq output: $it" }
+    
 
     doHumann3(
         params.doHumann3.bowtie2db,
