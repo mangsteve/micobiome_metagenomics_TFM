@@ -436,7 +436,7 @@ workflow {
         .map{it -> tuple(it[0], it[2])}
     callKronaFromKraken2(ch_krona_input)
     ch_krona_output = callKronaFromKraken2.out
-     .view{ "Krona output: $it" }
+     //.view{ "Krona output: $it" }
   }
 
 
