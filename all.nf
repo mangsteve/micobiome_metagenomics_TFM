@@ -316,6 +316,57 @@ process multiQC{
   '''
 }
 
+process concatFastq{
+  label 'mg12_concat_fastq'
+  conda params.concatFastq.conda
+  cpus params.resources.concatFastq.cpus
+  memory params.resources.concatFastq.mem
+  queue params.resources.concatFastq.queue
+  errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
+  maxRetries 10
+  publishDir "$results_dir/mg12_concat_fastq", mode: 'symlink'
+  input:
+  tuple(val(illumina_id), val(fastq))
+
+  output:
+  tuple(val(illumina_id), path("*_merged.fastq.gz"))
+  
+  shell:
+  '''
+  merged_fastq=!{illumina_id}_merged.fastq.gz
+  zcat !{fastq[0]} !{fastq[1]} | pigz -p !{params.resources.doHumann3.cpus} > $merged_fastq
+  '''
+}
+
+process doHumann3{
+  label 'mg13_humann3'
+  conda params.doHumann3.conda
+  cpus params.resources.doHumann3.cpus
+  memory params.resources.doHumann3.mem
+  queue params.resources.doHumann3.queue
+  errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
+  maxRetries 10
+  publishDir "$results_dir/mg13_humann3", mode: 'symlink'
+  input:
+    path bowtie2db
+    path metaphlan_index
+    tuple(val(illumina_id), path(fastq_merged))
+
+  output:
+  path("*_humann3results")
+  
+  shell:
+  '''
+  outdir=!{illumina_id}_humann3results
+  humann --input !{fastq_merged} \
+    --output  $outdir \
+    --threads !{params.resources.doHumann3.cpus}  \
+    --input-format "fastq"  \
+    --metaphlan-options "--input_type fastq --nproc !{params.resources.doHumann3.cpus} --index !{metaphlan_index}  --bowtie2db !{bowtie2db}" \
+    --resume
+  '''
+}
+
 
 workflow {
 
@@ -439,7 +490,6 @@ workflow {
      //.view{ "Krona output: $it" }
   }
 
-
   //MultiQC
   fastqc_coll = ch_fastqc.collect().ifEmpty([])
   trim_qc = ch_fastq_processed.map{it -> it[4]}.collect().ifEmpty([])
@@ -453,4 +503,21 @@ workflow {
             kraken_err, 
             bracken_err
             )
+
+//Humann3. First concatenate fastq and then call the humann3 pipeline
+//ch_fastq_filtered.view{ "Humann3 input: $it" }
+if(params.resources.doHumann3.do_humann){
+
+    concatFastq(ch_fastq_filtered)
+    ch_concat_fastq = concatFastq.out
+        //.view{ "concat fastq output: $it" }
+
+    doHumann3(
+        params.doHumann3.bowtie2db,
+        params.doHumann3.metaphlan_index, 
+        ch_concat_fastq
+    )
+    ch_humann3 = doHumann3.out
+        .view{ "Humann3 output: $it" }
+}
 }
