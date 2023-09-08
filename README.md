@@ -1,4 +1,4 @@
-# Metagenomics pipeline by the Y. Sanz laboratory
+# Metagenomics pipeline to classify and annotate bacterial reads
 
 Trims the Illumina reads using Trimmomatic and removes human sequences by aligning with bowtie2. Then, Kraken2 and Bracken are used for species identification, and the Humann3 pipeline for functional annotation. 
 
