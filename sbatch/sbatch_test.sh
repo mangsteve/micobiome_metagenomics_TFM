@@ -23,4 +23,4 @@
 module load  Nextflow/23.04.2
 module load Anaconda3/5.3.0
 
-nextflow run all.nf -c config/run_samples_cluster.config -profile conda -resume
+nextflow run all.nf -c config/run_samples_cluster.config -profile conda -resume -with-report report.html -with-dag pipeline_dag.html
