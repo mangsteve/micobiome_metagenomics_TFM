@@ -3,6 +3,7 @@ process doTrimmomatic{
   conda params.doTrimmomatic.conda
   cpus params.resources.doTrimmomatic.cpus
   memory params.resources.doTrimmomatic.mem
+  queue params.resources.doTrimmomatic.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg01_trimmomatic", mode: 'symlink'
@@ -35,6 +36,7 @@ process getFastQCIllumina{
   conda params.getFastQCIllumina.conda
   cpus params.resources.getFastQCIllumina.cpus
   memory params.resources.getFastQCIllumina.mem
+  queue params.resources.getFastQCIllumina.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg02_fastqc", mode: 'symlink'
@@ -55,6 +57,7 @@ process alignBowtie2{
   conda params.alignBowtie2.conda
   cpus params.resources.alignBowtie2.cpus
   memory params.resources.alignBowtie2.mem
+  queue params.resources.alignBowtie2.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg03_bowtie", mode: 'symlink'
@@ -81,6 +84,7 @@ process samtoolsSort{
   conda params.samtoolsSort.conda
   cpus params.resources.samtoolsSort.cpus
   memory params.resources.samtoolsSort.mem
+  queue params.resources.samtoolsSort.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg04_sortbam", mode: 'symlink'
@@ -103,6 +107,7 @@ process removeHumanReads{
   conda params.removeHumanReads.conda
   cpus params.resources.removeHumanReads.cpus
   memory params.resources.removeHumanReads.mem
+  queue params.resources.removeHumanReads.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg05_filtreads", mode: 'symlink'
@@ -135,6 +140,7 @@ process callKraken2{
   conda params.callKraken2.conda
   cpus params.resources.callKraken2.cpus
   memory params.resources.callKraken2.mem
+  queue params.resources.callKraken2.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg06_kraken2", mode: 'symlink'
@@ -171,6 +177,7 @@ process callBracken{
   conda params.callBracken.conda
   cpus params.resources.callBracken.cpus
   memory params.resources.callBracken.mem
+  queue params.resources.callBracken.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg07_Bracken", mode: 'symlink'
@@ -206,6 +213,7 @@ process braken2mpa{
   conda params.braken2mpa.conda
   cpus params.resources.braken2mpa.cpus
   memory params.resources.braken2mpa.mem
+  queue params.resources.braken2mpa.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg08_mpa", mode: 'symlink'
@@ -229,6 +237,7 @@ process combineMpa{
   conda params.combineMpa.conda
   cpus params.resources.combineMpa.cpus
   memory params.resources.combineMpa.mem
+  queue params.resources.combineMpa.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg09_combinempa", mode: 'copy'
@@ -257,6 +266,7 @@ process multiQC{
   conda params.multiQC.conda
   cpus params.resources.multiQC.cpus
   memory params.resources.multiQC.mem
+  queue params.resources.multiQC.queue
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg10_multiqc", mode: 'copy'
