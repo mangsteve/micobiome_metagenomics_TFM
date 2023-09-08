@@ -58,8 +58,8 @@ condadir=$(dirname $krakendir)
 echo $condadir
 
 #Copy scripts to conda directory
-cp -rv KrakenTools $condadir 
-chmod 777 $condadir/KrakenTools/*
+cp -rv KrakenTools/*.py $condadir 
+chmod 777 $condadir/*.py
 
 #Clean temporary directory
 cd ../
