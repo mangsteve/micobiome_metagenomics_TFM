@@ -22,7 +22,7 @@ conda install -c bioconda bwa bwa-mem2 samtools
 conda create --name kraken2-env python=3.10
 conda activate kraken2-env
 conda install -c bioconda kraken2
-#conda install -c bioconda krakentools 
+conda install -c bioconda pigz 
 
 conda create --name bracken-env python=3.10
 conda activate bracken-env
@@ -58,7 +58,7 @@ condadir=$(dirname $krakendir)
 echo $condadir
 
 #Copy scripts to conda directory
-cp -rv KrakenTools/*.py $condadir 
+cp -v KrakenTools/*.py $condadir 
 chmod 777 $condadir/*.py
 
 #Clean temporary directory
