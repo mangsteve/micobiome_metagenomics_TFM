@@ -172,6 +172,7 @@ process callKraken2{
   '''
 }
 
+
 process callBracken{
   label 'mg07_Bracken'
   conda params.callBracken.conda
@@ -261,8 +262,33 @@ process combineMpa{
   '''
 }
 
+process callKronaFromKraken2{
+  label 'mg10_krona'
+  conda params.callKronaFromKraken2.conda
+  cpus params.resources.callKronaFromKraken2.cpus
+  memory params.resources.callKronaFromKraken2.mem
+  queue params.resources.callKronaFromKraken2.queue
+  errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
+  maxRetries 10
+  publishDir "$results_dir/mg10_krona", mode: 'symlink'
+  input:
+  tuple(val(illumina_id), val(kraken_report))
+
+  output:
+  tuple(val(illumina_id), path("*.krona.html"))
+  
+
+  shell:
+  '''
+  outfile=!{illumina_id}.krona.html
+
+  ktImportTaxonomy -m 3 -t 5 !{kraken_report} -o $outfile
+
+  '''
+}
+
 process multiQC{
-  label 'mg10_multiqc'
+  label 'mg11_multiqc'
   conda params.multiQC.conda
   cpus params.resources.multiQC.cpus
   memory params.resources.multiQC.mem
@@ -403,6 +429,16 @@ workflow {
     //.view{ "getFastQCIllumina - FastQC reports: $it" }
     ch_fastqc = getFastQCIllumina.out
   }
+
+  //callKronaFromKraken2: Krona plot from Kraken report
+  if(params.resources.callKronaFromKraken2.do_krona){
+    ch_krona_input = ch_kraken2_output
+        .map{it -> tuple(it[0], it[2])}
+    callKronaFromKraken2(ch_krona_input)
+    ch_krona_output = callKronaFromKraken2.out
+     .view{ "Krona output: $it" }
+  }
+
 
   //MultiQC
   fastqc_coll = ch_fastqc.collect().ifEmpty([])

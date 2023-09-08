@@ -1,3 +1,10 @@
+#previous:
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+
+
 conda create --name fastqc-env python=3.10
 conda activate fastqc-env
 conda install -c bioconda fastqc
@@ -43,6 +50,10 @@ conda install -c bioconda seqtk pigz
 conda create --name seqkit-env python=3.10
 conda activate seqkit-env
 conda install -c bioconda seqkit pigz
+
+conda create --name humann-env python=3.10
+conda activate humann-env
+conda install -c bioconda humann
 
 ## Add Krakentools to kraken2-env
 #get scripts from github
