@@ -41,7 +41,8 @@ conda install -y -c bioconda krona
 
 conda create -y --name multiqc-env python=3.10
 conda activate multiqc-env
-conda install -y -c bioconda multiqc
+#conda install -y -c bioconda multiqc
+pip install multiqc
 
 conda create -y --name seqtk-env python=3.10
 conda activate seqtk-env
@@ -61,7 +62,7 @@ mkdir tmp
 cd tmp
 conda activate kraken2-env
 conda install -y git
-git clone https://github.com/jenniferlu717/KrakenToolsls
+git clone https://github.com/jenniferlu717/KrakenTools
 
 #get conda bin directory
 krakendir=$(which kraken2)
@@ -76,7 +77,7 @@ chmod 777 $condadir/*.py
 cd ../
 rm -rf tmp
 
-
+##########################
 ##Initialize Krona env
 conda activate krona_env
 
@@ -96,10 +97,12 @@ ln -s ~/krona/taxonomy /home/carmoma/anaconda3/envs/krona_env/opt/krona/taxonomy
 # then one needs to run  ktUpdateTaxonomy.sh --only-build
 ktUpdateTaxonomy.sh --only-build
 
-cd ~/projects/pollen/results/problem_samples_1/kraken_taxons
-mkdir krona_charts
-for i in $(ls *txt.gz); do echo $i; ktImportTaxonomy -m 3 -t 5 <(zcat $i) -o krona_charts/${i%.txt.gz}.html; done
-ktImportTaxonomy -m 3 -t 5 <(zcat *.txt.gz) -o krona_charts/all_mock.html
+#Exampe commands for krona:
+#for i in $(ls *txt.gz); do echo $i; ktImportTaxonomy -m 3 -t 5 <(zcat $i) -o krona_charts/${i%.txt.gz}.html; done
+#ktImportTaxonomy -m 3 -t 5 <(zcat *.txt.gz) -o krona_charts/all_mock.html
 
-cd ~/projects/pollen/results/mock_kraken1/kraken_tx_ont
-cd ~/projects/pollen/results/mock_kraken1/kraken_tx_illumina
+
+## Nextflow environment (if needed to run the pipeline)
+conda create -y --name nextflow-env python=3.10
+conda activate nextflow-env
+conda install -y -c bioconda nextflow
