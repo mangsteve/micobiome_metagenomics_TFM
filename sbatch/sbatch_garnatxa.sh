@@ -24,4 +24,4 @@
 #module load anaconda3_2022.10
 #conda activate nextflow-env
 
-nextflow run all.nf -c config/run_samples_cluster.config -profile conda -resume -with-report report.html -with-dag pipeline_dag.html
+nextflow run all.nf -c config/run_samples_garnatxa.config -profile conda -resume -with-report report.html -with-dag pipeline_dag.html
