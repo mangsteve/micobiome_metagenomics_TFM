@@ -16,16 +16,23 @@ process removeHumanReads{
 
   shell:
   '''
-  # 1) Get the IDs of reads in bam file (reads mapping human)
+  # 1) Get the IDs of reads in bam file (reads mapping human), in different files for R1 and R2
+  
   readsfile=$(basename -s .bam !{bam}).readids.txt
+  readsfile_r1=$(basename -s .bam !{bam}).R1.readids.txt
+  readsfile_r2=$(basename -s .bam !{bam}).R2.readids.txt
   samtools view !{bam} | cut -f 1 | sort -u > $readsfile
+  awk '{print $1"/1"}' $readsfile > $readsfile_r1
+  awk '{print $1"/2"}' $readsfile > $readsfile_r2
 
   # 2) Generate fastq 1 without human reads using seqkit, compress with pigz (parallel gzip)
+
   oname1=$(basename -s .fastq.gz !{fastq[0]}).filt.fastq.gz
-  seqkit grep -v -f $readsfile !{fastq[0]} | pigz -p !{params.resources.removeHumanReads.cpus} > $oname1
+  seqkit grep -v -f $readsfile_r1 !{fastq[0]} | pigz -p !{params.resources.removeHumanReads.cpus} > $oname1
   
   # 3) Generate fastq 2 without human reads using seqkit, compress with pigz (parallel gzip)
+
   oname2=$(basename -s .fastq.gz !{fastq[1]}).filt.fastq.gz
-  seqkit grep -v -f $readsfile !{fastq[1]} | pigz -p !{params.resources.removeHumanReads.cpus} > $oname2
+  seqkit grep -v -f $readsfile_r2 !{fastq[1]} | pigz -p !{params.resources.removeHumanReads.cpus} > $oname2
   '''
 }
