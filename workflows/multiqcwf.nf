@@ -26,7 +26,7 @@ workflow MULTIQC{
             kraken_err, 
             bracken_err
             )
-  ch_multiqc_out = multiQC.out
+  ch_multiqc_out = multiQC.out.map{it -> it[1]}.
 emit:
 ch_multiqc_out
 }
