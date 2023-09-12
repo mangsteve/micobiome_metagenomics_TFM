@@ -46,11 +46,11 @@ pip install multiqc
 
 conda create -y --name seqtk-env python=3.10
 conda activate seqtk-env
-conda install -y -c bioconda seqtk pigz
+conda install -y -c bioconda seqtk pigz samtools
 
 conda create -y --name seqkit-env python=3.10
 conda activate seqkit-env
-conda install -y -c bioconda seqkit pigz
+conda install -y -c bioconda seqkit pigz samtools
 
 conda create -y --name humann-env python=3.10
 conda activate humann-env
@@ -103,6 +103,6 @@ ktUpdateTaxonomy.sh --only-build
 
 
 ## Nextflow environment (if needed to run the pipeline)
-conda create -y --name nextflow-env python=3.10
+conda create -y --name nextflow-env2 python=3.10
 conda activate nextflow-env
 conda install -y -c bioconda nextflow
