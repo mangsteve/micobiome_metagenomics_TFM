@@ -5,7 +5,8 @@ process alignBowtie2{
   conda params.alignBowtie2.conda
   cpus params.resources.alignBowtie2.cpus
   memory params.resources.alignBowtie2.mem
-  queue params.resources.alignBowtie2.queue
+  queue params.resources.alignBowtie2.queue 
+  clusterOptions params.resources.alignBowtie2.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg03_bowtie", mode: 'symlink'

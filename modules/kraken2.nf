@@ -5,6 +5,7 @@ process callKraken2{
   cpus params.resources.callKraken2.cpus
   memory params.resources.callKraken2.mem
   queue params.resources.callKraken2.queue
+  clusterOptions params.resources.callKraken2.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg06_kraken2", mode: 'symlink'

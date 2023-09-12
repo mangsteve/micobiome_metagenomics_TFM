@@ -4,6 +4,7 @@ process samtoolsSort{
   cpus params.resources.samtoolsSort.cpus
   memory params.resources.samtoolsSort.mem
   queue params.resources.samtoolsSort.queue
+  clusterOptions params.resources.samtoolsSort.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg04_sortbam", mode: 'symlink'

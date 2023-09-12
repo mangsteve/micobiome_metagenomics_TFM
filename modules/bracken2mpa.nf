@@ -4,6 +4,7 @@ process braken2mpa{
   cpus params.resources.braken2mpa.cpus
   memory params.resources.braken2mpa.mem
   queue params.resources.braken2mpa.queue
+  clusterOptions params.resources.braken2mpa.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg08_mpa", mode: 'symlink'

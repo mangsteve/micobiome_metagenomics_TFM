@@ -4,6 +4,7 @@ process multiQC{
   cpus params.resources.multiQC.cpus
   memory params.resources.multiQC.mem
   queue params.resources.multiQC.queue
+  clusterOptions params.resources.multiQC.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg10_multiqc", mode: 'copy'

@@ -5,6 +5,7 @@ process combineMpa{
   cpus params.resources.combineMpa.cpus
   memory params.resources.combineMpa.mem
   queue params.resources.combineMpa.queue
+  clusterOptions params.resources.combineMpa.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg09_combinempa", mode: 'copy'

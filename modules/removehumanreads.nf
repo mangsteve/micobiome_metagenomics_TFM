@@ -4,6 +4,7 @@ process removeHumanReads{
   cpus params.resources.removeHumanReads.cpus
   memory params.resources.removeHumanReads.mem
   queue params.resources.removeHumanReads.queue
+  clusterOptions params.resources.removeHumanReads.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg05_filtreads", mode: 'symlink'
@@ -17,7 +18,7 @@ process removeHumanReads{
   shell:
   '''
   # 1) Get the IDs of reads in bam file (reads mapping human), in different files for R1 and R2
-  
+
   readsfile=$(basename -s .bam !{bam}).readids.txt
   readsfile_r1=$(basename -s .bam !{bam}).R1.readids.txt
   readsfile_r2=$(basename -s .bam !{bam}).R2.readids.txt

@@ -4,6 +4,7 @@ process callKronaFromKraken2{
   cpus params.resources.callKronaFromKraken2.cpus
   memory params.resources.callKronaFromKraken2.mem
   queue params.resources.callKronaFromKraken2.queue
+  clusterOptions params.resources.callKronaFromKraken2.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg10_krona", mode: 'symlink'
