@@ -4,6 +4,7 @@ process doTrimmomatic{
   cpus params.resources.doTrimmomatic.cpus
   memory params.resources.doTrimmomatic.mem
   queue params.resources.doTrimmomatic.queue
+  clusterOptions params.resources.doTrimmomatic.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg01_trimmomatic", mode: 'symlink'

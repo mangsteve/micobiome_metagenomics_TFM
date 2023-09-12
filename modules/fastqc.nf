@@ -4,6 +4,7 @@ process getFastQCIllumina{
   cpus params.resources.getFastQCIllumina.cpus
   memory params.resources.getFastQCIllumina.mem
   queue params.resources.getFastQCIllumina.queue
+  clusterOptions params.resources.getFastQCIllumina.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg02_fastqc", mode: 'symlink'
