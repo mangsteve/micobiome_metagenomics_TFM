@@ -6,3 +6,5 @@ cd /home/ysanz/CovidPersistente/data/temporal_carlos
 git clone https://github.com/CarlosMoraMartinez/metagen1
 
 cd metagen1
+
+sbatch sbatch/sbatch_test.sh
