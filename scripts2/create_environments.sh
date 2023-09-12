@@ -103,6 +103,11 @@ ktUpdateTaxonomy.sh --only-build
 
 
 ## Nextflow environment (if needed to run the pipeline)
-conda create -y --name nextflow-env2 python=3.10
-conda activate nextflow-env
-conda install -y -c bioconda nextflow
+
+mkdir bin
+cd bin
+curl -s https://get.nextflow.io | bash
+./nextflow run tutorial.nf
+
+export PATH=$HOME/bin:$PATH
+#And modify ~/.basrc file aadding this last line

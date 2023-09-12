@@ -21,7 +21,6 @@
 #SBATCH --mem=2G
 
 #Do this before executing sbatch
-#module load anaconda3_2022.10
-#conda activate nextflow-env
+module load anaconda3_2022.10
 
 nextflow run all.nf -c config/run_samples_garnatxa.config -profile conda -resume -with-report report.html -with-dag pipeline_dag.html
