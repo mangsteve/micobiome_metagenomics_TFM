@@ -68,5 +68,3 @@ top_modules:
        - "*_1_fastqc*"
        - "*_2_fastqc*"
        - "*_1.trimmed*"
- - "fastqc":
-      name: "FastQC all"
