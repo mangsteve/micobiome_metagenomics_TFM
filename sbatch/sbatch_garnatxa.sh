@@ -18,7 +18,7 @@
 #SBATCH -e slurm.%N.%j.err
 #SBATCH --qos=long
 #SBATCH --cpus-per-task 4
-#SBATCH --mem=2G
+#SBATCH --mem=8G
 
 #Do this before executing sbatch
 module load anaconda #3_2022.10
