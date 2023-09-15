@@ -1,4 +1,3 @@
-
 process combineMpa{
   label 'mg09_combinempa'
   conda params.combineMpa.conda

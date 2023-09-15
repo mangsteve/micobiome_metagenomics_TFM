@@ -1,4 +1,3 @@
-
 process callKraken2{
   label 'mg06_kraken2'
   conda params.callKraken2.conda
