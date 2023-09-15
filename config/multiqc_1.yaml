@@ -1,4 +1,4 @@
-custom_logo: "/home/ccarlos/repos/metagenomics-nf/assets/Logo-IATA-CSIC.png"
+custom_logo: "/home/ysanz/G4M/metagen1/assets"
 title: "Metagenomics"
 subtitle: "Quality Report"
 comment: "Estudio de prueba para testar la pipeline"
