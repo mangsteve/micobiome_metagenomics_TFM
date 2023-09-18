@@ -18,7 +18,7 @@
 #SBATCH -e slurm.%N.%j.err
 #SBATCH --partition=long
 #SBATCH --cpus-per-task 4
-#SBATCH --mem=2G
+#SBATCH --mem=8G
 
 module load  Nextflow/23.04.2
 module load Anaconda3/5.3.0
