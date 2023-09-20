@@ -110,4 +110,17 @@ curl -s https://get.nextflow.io | bash
 ./nextflow run tutorial.nf
 
 export PATH=$HOME/bin:$PATH
-#And modify ~/.basrc file aadding this last line
+#And modify ~/.basrc file aadding this last ine
+
+
+## R environment
+
+conda create -y --name R-env python=3.10
+conda activate R-env
+conda install -c conda-forge r-base
+conda install -c bioconda bioconductor-biocinstaller
+
+## MASH environment
+conda create -y --name mash-env python=3.10
+conda activate mash-env
+conda install -y -c bioconda mash

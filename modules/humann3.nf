@@ -10,11 +10,11 @@ process doHumann3{
   publishDir "$results_dir/mg13_humann3", mode: 'symlink'
   input:
     path bowtie2db
-    path metaphlan_index
+    val metaphlan_index
     tuple(val(illumina_id), path(fastq_merged))
 
   output:
-  path("*_humann3results")
+    path("*_humann3results")
   
   shell:
   '''
@@ -22,8 +22,10 @@ process doHumann3{
   humann --input !{fastq_merged} \
     --output  $outdir \
     --threads !{params.resources.doHumann3.cpus}  \
-    --input-format "fastq"  \
-    --metaphlan-options "--input_type fastq --nproc !{params.resources.doHumann3.cpus} --index !{metaphlan_index}  --bowtie2db !{bowtie2db}" \
+    --input-format "fastq.gz"  \
+    --remove-temp-output \
+    --metaphlan-options "--input_type fastq.gz --nproc !{params.resources.doHumann3.cpus} --index !{metaphlan_index} --bowtie2db !{bowtie2db}" \
     --resume
+
   '''
 }
