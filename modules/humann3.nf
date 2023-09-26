@@ -24,7 +24,7 @@ process doHumann3{
     --threads !{params.resources.doHumann3.cpus}  \
     --input-format "fastq.gz"  \
     --remove-temp-output \
-    --metaphlan-options "--input_type fastq.gz --nproc !{params.resources.doHumann3.cpus} --index !{metaphlan_index} --bowtie2db !{bowtie2db}" \
+    --metaphlan-options "--input_type fastq --nproc !{params.resources.doHumann3.cpus} --index !{metaphlan_index} --bowtie2db !{bowtie2db}" \
     --resume
 
   '''
