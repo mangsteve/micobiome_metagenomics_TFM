@@ -1,0 +1,70 @@
+custom_logo: "/home/mysanz/projects/PREDICOL_Adults_H0/metagen1/assets/Logo-IATA-CSIC.png"
+title: "Metagenomics"
+subtitle: "Quality Report"
+comment: "PREDICOL adultos tiempo inicial"
+extra_fn_clean_exts:
+  - ".standard.kraken2.report"
+  - ".standard"
+  - ".trimmed_fastqc.html"
+  - "fastqc.html"
+  - "fastqc.zip"
+  - ".trimmed_fastqc.zip"
+  - ".trimmed.single_fastqc.html"
+  - ".trimmed.single_fastqc.zip"
+  - ".bowtie2.err"
+  - ".bracken.err"
+  - ".standard.kraken2.report"
+  - ".trimlog.out"
+  - "_"
+top_modules:
+ - "trimmomatic":
+      path_filters:
+       - "*.trimlog.out"
+ - "bowtie2":
+      name: "bowtie2 to remove human reads"
+ - "kraken":
+      name: "Kraken2"
+      path_filters:
+       - "*.kraken2.report"
+ - "fastqc":
+      name: "FastQC Before Trimming - R1"
+      info: "This section shows the module with different files"
+      path_filters_exclude:
+       - "*.trimmed_fastqc.*"
+       - "*.trimmed.single_fastqc.*"
+       - "*_2_fastqc*"
+ - "fastqc":
+      name: "FastQC Before Trimming - R2"
+      info: "This section shows the module with different files"
+      path_filters_exclude:
+       - "*.trimmed_fastqc.*"
+       - "*.trimmed.single_fastqc.*"
+       - "*_1_fastqc*"
+ - "fastqc":
+      name: "FastQC Paired After Trimming - R1"
+      path_filters_exclude:
+       - "*.trimmed.single_fastqc.*"
+       - "*_1_fastqc*"
+       - "*_2_fastqc*"
+       - "*_2.trimmed*"
+ - "fastqc":
+      name: "FastQC Paired After Trimming - R2"
+      path_filters_exclude:
+       - "*.trimmed.single_fastqc.*"
+       - "*_1_fastqc*"
+       - "*_2_fastqc*"
+       - "*_1.trimmed*"
+ - "fastqc":
+      name: "FastQC Unpaired After Trimming - R1"
+      path_filters_exclude:
+       - "*.trimmed_fastqc.*"
+       - "*_1_fastqc*"
+       - "*_2_fastqc*"
+       - "*_2.trimmed*"
+ - "fastqc":
+      name: "FastQC Unpaired After Trimming - R2"
+      path_filters_exclude:
+       - "*.trimmed_fastqc.*"
+       - "*_1_fastqc*"
+       - "*_2_fastqc*"
+       - "*_1.trimmed*"
