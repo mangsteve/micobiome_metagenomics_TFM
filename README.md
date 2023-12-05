@@ -7,7 +7,7 @@ Trims the Illumina reads using Trimmomatic and removes human sequences by aligni
 The pipeline is prepared to run locally or in a Slurm cluster. You can switch between configurations by using different config files (in the **/config** directory)
 
 ```
-nextflow run all.nf -c config/run_samples_cluster.config -profile conda -resume -with-report report.html -with-dag pipeline_dag.html
+nextflow run all.nf -c config/run_samples_cluster.config -profile conda -resume -with-timeline timeline.html -with-report report.html -with-dag pipeline_dag.html
 ```
 
 # Dependencies
