@@ -24,6 +24,7 @@ workflow {
       ch_alignment_output = CLEANFASTQ.out.ch_alignment_output
       ch_bam_sorted = CLEANFASTQ.out.ch_bam_sorted
     }else{
+      view("Taking raw fastq as final fastq.")
       ch_fastq_filtered = ch_rawfastq
 
       ch_fastq_processed  = Channel.from([])
