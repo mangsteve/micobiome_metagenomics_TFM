@@ -24,7 +24,7 @@ workflow {
       ch_alignment_output = CLEANFASTQ.out.ch_alignment_output
       ch_bam_sorted = CLEANFASTQ.out.ch_bam_sorted
     }else{
-      view("Taking raw fastq as final fastq.")
+      print "Taking raw fastq as final fastq."
       ch_fastq_filtered = ch_rawfastq
 
       ch_fastq_processed  = Channel.from([])
@@ -53,8 +53,9 @@ workflow {
 
   //Call Humann3 workflow
    if(params.workflows.doHumann3){
-      HUMANN3(ch_fastq_filtered)
-      ch_humann3 = HUMANN3.out.ch_humann3
+      //HUMANN3(ch_fastq_filtered)
+      //ch_humann3 = HUMANN3.out.ch_humann3
+      print "Test"
 
    }
 
