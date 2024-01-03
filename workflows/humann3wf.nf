@@ -21,7 +21,8 @@ ch_humann3 = doHumann3.out
 
 ch_humann3_2merge = ch_humann3.collect{it->"${it}/*.tsv"}
     .view{ "Humann3 output by file: $it" }
-    .map{it->Channel.fromPath(it.toString())}
+    .toList()
+    //.map{it->Channel.fromPath(it.toString())}
     .view{ "Humann3 output fromPath: $it" }
     .view{it.getClass()}
 
