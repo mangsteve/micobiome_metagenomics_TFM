@@ -9,7 +9,7 @@ process mergeHumann{
   maxRetries 10
   publishDir "$results_dir/mg14_mergeHumann", mode: 'copy'
   input:
-    val humann_results_list
+    path humann_results_list
   output:
   path("humann3_merged.tsv")
 
@@ -20,6 +20,7 @@ process mergeHumann{
 
   stub:
   """
+  echo $humann_results_list
   touch humann3_merged.tsv
   """
 }
