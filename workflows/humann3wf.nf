@@ -1,6 +1,6 @@
 include { concatFastq } from '../modules/concatfastq'
 include { doHumann3 } from '../modules/humann3'
-//include { mergeHumann } from '../modules/merge_humann'
+include { mergeHumann } from '../modules/merge_humann'
 
 workflow HUMANN3 {
 take:
@@ -18,11 +18,13 @@ doHumann3(
 )
 ch_humann3 = doHumann3.out
     .view{ "Humann3 output: $it" }
-
-ch_humann3_2merge = ch_humann3.map{ it->Channel.fromPath("${it}/*.tsv")}
-    .view{ "Humann3 output by file: $it" }
     .collect()
     .view{ "Humann3 output collapse: $it" }
+
+/* ch_humann3_2merge = ch_humann3.map{ it->Channel.fromPath("${it}/*.tsv")}
+    .view{ "Humann3 output by file: $it" }
+    .collect()
+    .view{ "Humann3 output collapse: $it" } */
 /*     .toList()
     .map{ it->Channel.fromPath(it) }
     .view{ "Humann3 output fromPath: $it" }
@@ -30,10 +32,10 @@ ch_humann3_2merge = ch_humann3.map{ it->Channel.fromPath("${it}/*.tsv")}
 
 /* ch_humann3_2merge = Channel.fromPath(ch_humann3_2merge)
     .view{ "Humann3 merge: $it" } */
-/* mergeHumann(ch_humann3_2merge)
-ch_humann3_merged = mergeHumann.out */
+mergeHumann(ch_humann3)
+ch_humann3_merged = mergeHumann.out
 
 emit:
 ch_humann3
-//ch_humann3_merged
+ch_humann3_merged
 }
