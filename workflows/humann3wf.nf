@@ -19,7 +19,7 @@ doHumann3(
 ch_humann3 = doHumann3.out
     .view{ "Humann3 output: $it" }
 
-ch_humann3_2merge = ch_humann3.collect{it->"${it}/*.tsv"}
+ch_humann3_2merge = ch_humann3.collect{it->Channel.fromPath("${it}/*.tsv")}
     .view{ "Humann3 output by file: $it" }
     .view{it.getClass()}
 
