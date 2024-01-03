@@ -18,18 +18,18 @@ doHumann3(
         ch_concat_fastq
 )
 ch_humann3 = doHumann3.out
-    .view{ "Humann3 output: $it" }
+    //.view{ "Humann3 output: $it" }
     .flatten()
     .collect()
-    .view{ "Humann3 output flat: $it" }
+    //.view{ "Humann3 output flat: $it" }
 
 mergeHumann(ch_humann3)
 ch_humann3_merged = mergeHumann.out
-    .view{ "Humann3 output merged: $it" }
+    //.view{ "Humann3 output merged: $it" }
 
 translateHumann(ch_humann3_merged, params.translateHumann3.cazy_db)
 ch_humann3_translated = translateHumann.out
-    .view{ "Humann3 output translated: $it" }
+    //.view{ "Humann3 output translated: $it" }
 
 emit:
 ch_humann3
