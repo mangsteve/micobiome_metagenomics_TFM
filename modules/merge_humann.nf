@@ -1,5 +1,5 @@
 process mergeHumann{
-  label 'mg11_multiqc'
+  label 'mg14_humannmerged'
   conda params.doHumann3.conda
   cpus params.resources.mergeHumann3.cpus
   memory params.resources.mergeHumann3.mem
