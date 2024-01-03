@@ -24,7 +24,7 @@ workflow {
       ch_alignment_output = CLEANFASTQ.out.ch_alignment_output
       ch_bam_sorted = CLEANFASTQ.out.ch_bam_sorted
     }else{
-      print "Taking raw fastq as final fastq."
+      print "Skipping CLEANFASTQ. Taking raw fastq as final fastq."
       ch_fastq_filtered = ch_rawfastq
 
       ch_fastq_processed  = Channel.from([])
@@ -44,6 +44,7 @@ workflow {
       ch_combineMpa_output = KRAKEN2BRACKEN.out.ch_combineMpa_output
       ch_krona_output = KRAKEN2BRACKEN.out.ch_krona_output
    }else{
+      print "Skipping KRAKEN2BRACKEN."
       ch_kraken2_output = Channel.from([])
       ch_bracken_output = Channel.from([])
       ch_transform2mpa_output = Channel.from([])
@@ -53,10 +54,8 @@ workflow {
 
   //Call Humann3 workflow
    if(params.workflows.doHumann3){
-      //HUMANN3(ch_fastq_filtered)
-      //ch_humann3 = HUMANN3.out.ch_humann3
-      print "Test"
-
+      HUMANN3(ch_fastq_filtered)
+      ch_humann3 = HUMANN3.out.ch_humann3
    }
 
    //Call MultiQC workflow
@@ -71,6 +70,7 @@ workflow {
       )
       ch_multiqc_out = MULTIQC.out.ch_multiqc_out
    }else{
+      print "Skipping MULTIQC."
       ch_multiqc_out = Channel.from([])
    }
 }
