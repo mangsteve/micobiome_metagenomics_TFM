@@ -17,4 +17,9 @@ process mergeHumann{
   '''
   humann_join_tables --input . --output humann3_merged.tsv  
   '''
+
+  stub:
+  """
+  touch humann3_merged.tsv
+  """
 }

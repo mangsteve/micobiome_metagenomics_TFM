@@ -14,7 +14,7 @@ process doHumann3{
     tuple(val(illumina_id), path(fastq_merged))
 
   output:
-    path("*_humann3results")
+    path("${illumina_id}_humann3results/")
   
   shell:
   '''
@@ -28,4 +28,13 @@ process doHumann3{
     --resume
 
   '''
+
+  stub:
+  """
+  resdir=$illumina_id'_humann3results'
+  mkdir \$resdir
+  touch \$resdir/$illumina_id'_merged_genefamilies.tsv'
+  touch \$resdir/$illumina_id'_merged_pathabundance.tsv'
+  touch \$resdir/$illumina_id'_merged_pathcoverage.tsv'
+  """
 }
