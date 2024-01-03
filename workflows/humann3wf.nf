@@ -23,6 +23,8 @@ ch_humann3_2merge = ch_humann3.map{it->"${it}/*.tsv"}
     .collect()
     .view{ "Humann3 output by file: $it" }
 
+ch_humann3_2merge = Channel.fromPath(ch_humann3_2merge)
+    .view{ "Humann3 merge: $it" }
 /* mergeHumann(ch_humann3_2merge)
 ch_humann3_merged = mergeHumann.out */
 
