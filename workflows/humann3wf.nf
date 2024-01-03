@@ -19,15 +19,11 @@ doHumann3(
 ch_humann3 = doHumann3.out
     .view{ "Humann3 output: $it" }
 
-ch_humann3_2merge = ch_humann3.map{it->"${it}/*.tsv"}
+ch_humann3_2merge = ch_humann3.collect{it->"${it}/*.tsv"}
     .view{ "Humann3 output by file: $it" }
-    .fromPath()
-    .view{ "Humann3 output expanded: $it" }
-    .collect()
-    .view{ "Humann3 output collected: $it" }
 
-/* ch_humann3_2merge = Channel.fromPath(ch_humann3_2merge)
-    .view{ "Humann3 merge: $it" } */
+ch_humann3_2merge = Channel.fromPath(ch_humann3_2merge)
+    .view{ "Humann3 merge: $it" }
 /* mergeHumann(ch_humann3_2merge)
 ch_humann3_merged = mergeHumann.out */
 
