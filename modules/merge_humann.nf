@@ -1,5 +1,5 @@
 process mergeHumann{
-  label 'mg11_multiqc'
+  label 'mg14_humannmerged'
   conda params.doHumann3.conda
   cpus params.resources.mergeHumann3.cpus
   memory params.resources.mergeHumann3.mem
@@ -9,7 +9,7 @@ process mergeHumann{
   maxRetries 10
   publishDir "$results_dir/mg14_mergeHumann", mode: 'copy'
   input:
-    val humann_results_list
+    path humann_results_list
   output:
   path("humann3_merged.tsv")
 
@@ -17,4 +17,10 @@ process mergeHumann{
   '''
   humann_join_tables --input . --output humann3_merged.tsv  
   '''
+
+  stub:
+  """
+  echo $humann_results_list
+  touch humann3_merged.tsv
+  """
 }

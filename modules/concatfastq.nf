@@ -19,4 +19,9 @@ process concatFastq{
   merged_fastq=!{illumina_id}_merged.fastq.gz
   zcat !{fastq[0]} !{fastq[1]} | pigz -p !{params.resources.doHumann3.cpus} > $merged_fastq
   '''
+  
+  stub:
+  """
+  touch $illumina_id'_merged.fastq.gz'
+  """
 }

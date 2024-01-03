@@ -14,7 +14,7 @@ process doHumann3{
     tuple(val(illumina_id), path(fastq_merged))
 
   output:
-    path("*_humann3results")
+    path("${illumina_id}_humann3results/*.tsv")
   
   shell:
   '''
@@ -27,5 +27,15 @@ process doHumann3{
     --metaphlan-options "--input_type fastq --nproc !{params.resources.doHumann3.cpus} --index !{metaphlan_index} --bowtie2db !{bowtie2db}" \
     --resume
 
+
   '''
+
+  stub:
+  """
+  resdir=$illumina_id'_humann3results'
+  mkdir \$resdir
+  touch \$resdir/$illumina_id'_merged_genefamilies.tsv'
+  touch \$resdir/$illumina_id'_merged_pathabundance.tsv'
+  touch \$resdir/$illumina_id'_merged_pathcoverage.tsv'
+  """
 }
