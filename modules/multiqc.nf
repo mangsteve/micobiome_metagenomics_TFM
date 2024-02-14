@@ -17,7 +17,7 @@ process multiQC{
     path bracken_err
 
   output:
-  tuple(path("multiqc_report.html"), path("multiqc_data"))
+  path("multiqc_report.html")
 
   shell:
   '''
