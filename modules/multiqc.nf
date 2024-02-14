@@ -21,7 +21,7 @@ process multiQC{
 
   shell:
   '''
-  mv !{yaml} --filename multiqc_report.html --config multiqc_config.yaml 
-  multiqc .  
+  mv !{yaml} multiqc_config.yaml 
+  multiqc --filename multiqc_report.html .  
   '''
 }
