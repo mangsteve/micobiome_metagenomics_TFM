@@ -56,6 +56,13 @@ conda create -y --name humann-env python=3.10
 conda activate humann-env
 conda install -y -c bioconda humann
 
+humann_databases --download chocophlan full /DATA12/COMUN/DB/humann3
+humann_databases --download uniref uniref90_diamond /DATA12/COMUN/DB/humann3
+humann_databases --download utility_mapping full /DATA12/COMUN/DB/humann3
+humann_config --print
+conda install -c bioconda metaphlan
+#Download data_demoand launch test
+
 ## Add Krakentools to kraken2-env
 #get scripts from github
 mkdir tmp
