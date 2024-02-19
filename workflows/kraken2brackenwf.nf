@@ -18,7 +18,7 @@ workflow KRAKEN2BRACKEN {
             ch_fastq_filtered
   )
   ch_kraken2_output = callKraken2.out
-   // .view{"Kraken2 output: $it"}
+    //.view{"Kraken2 output: $it"}
 
   //Call Bracken
   ch_bracken_input = ch_kraken2_output

@@ -28,12 +28,12 @@ process removeHumanReads{
 
   # 2) Generate fastq 1 without human reads using seqkit, compress with pigz (parallel gzip)
 
-  oname1=$(basename -s .fastq.gz !{fastq[0]}).filt.fastq.gz
+  oname1=!{illumina_id}_1.filt.fastq.gz
   seqkit grep -v -f $readsfile_r1 !{fastq[0]} | gzip > $oname1 #pigz -p !{params.resources.removeHumanReads.cpus} 
   
   # 3) Generate fastq 2 without human reads using seqkit, compress with pigz (parallel gzip)
 
-  oname2=$(basename -s .fastq.gz !{fastq[1]}).filt.fastq.gz
+  oname2=!{illumina_id}_2.filt.fastq.gz
   seqkit grep -v -f $readsfile_r2 !{fastq[1]} | gzip > $oname2
   '''
 }
