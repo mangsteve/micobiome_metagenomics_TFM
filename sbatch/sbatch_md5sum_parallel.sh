@@ -21,5 +21,8 @@
 #SBATCH --mem=60G
 #SBATCH --time=1-00:00:00 # 8 días 
 
+#Only one process:
 #md5sum *.gz > md5dum.txt
+
+# The P argument indicates number of processes
 find *.gz -type f | xargs -L1 -P48 md5sum > md5sumpar.txt
