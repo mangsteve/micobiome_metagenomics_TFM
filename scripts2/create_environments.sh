@@ -56,6 +56,32 @@ conda create -y --name humann-env python=3.10
 conda activate humann-env
 conda install -y -c bioconda humann
 
+PHLANDATABASE='/DATA12/COMUN/DB/metaphlan'
+conda create -y --name metaphlan-env2 python=3.7
+conda activate metaphlan-env2
+conda install -y numpy pandas
+conda install -y conda-forge::biopython
+conda install -y -c conda-forge -c bioconda metaphlan
+metaphlan --install --bowtie2db $PHLANDATABASE
+
+humann_databases --download chocophlan full /DATA12/COMUN/DB/humann3
+humann_databases --download uniref uniref90_diamond /DATA12/COMUN/DB/humann3
+humann_databases --download utility_mapping full /DATA12/COMUN/DB/humann3
+humann_config --print
+conda install -c bioconda metaphlan
+#Download data_demoand launch test
+
+
+## Assembly environments
+conda create -y --name spades-env python=3.10
+conda activate spades-env
+conda install -y bioconda::spades
+
+conda create -y --name spades-env python=3.11
+conda activate megahit-env
+conda install -y -c bioconda megahit
+
+
 ## Add Krakentools to kraken2-env
 #get scripts from github
 mkdir tmp

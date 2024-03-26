@@ -20,6 +20,12 @@ workflow CLEANFASTQ {
                 )
     ch_fastq_processed = doTrimmomatic.out
      //.view{ "Illumina trimmed reads: $it" }
+     ch_fastq_processed_paired = ch_fastq_processed.map{it -> tuple(it[0], it[1])}
+     //.view{ "trimmed fastq paired only: $it" }
+  }else{
+    ch_fastq_processed = ch_rawfastq
+    ch_fastq_processed_paired = ch_rawfastq
+    .view{ "input fastq into processed channel: $it" }
   }
 
   //Initialize channels 
@@ -32,11 +38,11 @@ workflow CLEANFASTQ {
   }
 
   //Add trimmed fastq to the flat fastq channel to perform FastQC
-    if(params.getFastQCIllumina.do_fastqc_trim){
+    if(params.getFastQCIllumina.do_fastqc_trim &&  params.doTrimmomatic.do_trim){
       ch_flatfastq = ch_fastq_processed.map{it -> it[1]}
       .flatten().concat(ch_flatfastq)
     }
-    if(params.getFastQCIllumina.do_fastqc_trim_single){
+    if(params.getFastQCIllumina.do_fastqc_trim_single && params.doTrimmomatic.do_trim){
       ch_flatfastq = ch_fastq_processed.map{it -> it[2]}
       .flatten().concat(ch_flatfastq)
     }
@@ -49,8 +55,7 @@ workflow CLEANFASTQ {
   }
 
   //Map paired reads
-  ch_fastq_processed_paired = ch_fastq_processed.map{it -> tuple(it[0], it[1])}
-  //.view{ "trimmed fastq paired only: $it" }
+  
   ch_alignment_output = Channel.from([])
   ch_bam = Channel.from([])
   if(params.mapping_tool == 'bowtie2'){

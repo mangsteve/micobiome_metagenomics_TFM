@@ -9,7 +9,7 @@ process combineMpa{
   maxRetries 10
   publishDir "$results_dir/mg09_combinempa", mode: 'copy'
   input:
-  tuple(val(taxonomy_level_name), val(mpa), val(letter))
+  tuple(val(taxonomy_level_name), path(mpa), val(letter))
 
   output:
   tuple(val(taxonomy_level_name), path("*.mpa.combined.txt"), path("*.mpa.combined.clean1.txt"), path("*.mpa.combined.clean2.txt"))

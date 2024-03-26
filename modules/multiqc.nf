@@ -17,11 +17,11 @@ process multiQC{
     path bracken_err
 
   output:
-  tuple(path("multiqc_report.html"), path("multiqc_data"))
+  path("multiqc_report.html")
 
   shell:
   '''
   mv !{yaml} multiqc_config.yaml
-  multiqc .  
+  multiqc --filename multiqc_report.html .  
   '''
 }

@@ -9,7 +9,7 @@ process callKronaFromKraken2{
   maxRetries 10
   publishDir "$results_dir/mg10_krona", mode: 'symlink'
   input:
-  tuple(val(illumina_id), val(kraken_report))
+  tuple(val(illumina_id), path(kraken_report))
 
   output:
   tuple(val(illumina_id), path("*.krona.html"))
