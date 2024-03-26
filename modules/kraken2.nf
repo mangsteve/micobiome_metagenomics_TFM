@@ -11,7 +11,7 @@ process callKraken2{
   input:
   path k2database
   val confidence
-  tuple(val(illumina_id), val(fastq))
+  tuple(val(illumina_id), path(fastq))
 
   output:
   tuple(val(illumina_id), path("*standard.kraken2.gz"), path("*.standard.kraken2.report") ,path("*tx.fastq.gz"), path("*kraken2.err"))

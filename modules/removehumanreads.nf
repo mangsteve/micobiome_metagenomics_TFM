@@ -9,7 +9,7 @@ process removeHumanReads{
   maxRetries 10
   publishDir "$results_dir/mg05_filtreads", mode: 'symlink'
   input:
-  tuple(val(illumina_id), path(bam), path(bai), val(fastq))
+  tuple(val(illumina_id), path(bam), path(bai), path(fastq))
   
   output:
   tuple(val(illumina_id), path ('*.readids.txt'), path('*.filt.fastq.gz'))

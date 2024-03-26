@@ -13,7 +13,7 @@ process alignBowtie2{
   input:
   val index
   val options
-  tuple(val(illumina_id), val(fastq))
+  tuple(val(illumina_id), path(fastq))
   
   output:
   tuple(val(illumina_id), path('*.bam'), path('*.err'))

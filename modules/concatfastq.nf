@@ -9,7 +9,7 @@ process concatFastq{
   maxRetries 10
   publishDir "$results_dir/mg12_concat_fastq", mode: 'symlink'
   input:
-  tuple(val(illumina_id), val(fastq))
+  tuple(val(illumina_id), path(fastq))
 
   output:
   tuple(val(illumina_id), path("*_merged.fastq.gz"))
