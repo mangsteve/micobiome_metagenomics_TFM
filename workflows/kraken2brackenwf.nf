@@ -42,7 +42,7 @@ workflow KRAKEN2BRACKEN {
   ch_combineMpa_input = ch_transform2mpa_output
      .map{it -> tuple(it[1], it[2])}
      .groupTuple()
-     .map{it -> tuple(it[0], it[1].join(' '), it[0][0])}
+     .map{it -> tuple(it[0], it[1], it[0][0])} //[1].join(' ') -> it is not necessary to concat files as a string
      //.view{"Combine MPA input: $it"}
   combineMpa(ch_combineMpa_input)
   ch_combineMpa_output = combineMpa.out
@@ -56,6 +56,8 @@ workflow KRAKEN2BRACKEN {
     callKronaFromKraken2(ch_krona_input)
     ch_krona_output = callKronaFromKraken2.out
      //.view{ "Krona output: $it" }
+  }else{
+    ch_krona_output = Channel.from([])
   }
   emit:
   ch_kraken2_output

@@ -9,8 +9,8 @@ process doTrimmomatic{
   maxRetries 10
   publishDir "$results_dir/mg01_trimmomatic", mode: 'symlink'
   input:
-  tuple(val(illumina_id), val(fastq))
-  val illuminaclip
+  tuple(val(illumina_id), path(fastq))
+  path illuminaclip
   val slidingwindow
   val minlen
   
