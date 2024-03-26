@@ -10,7 +10,7 @@ process doTrimmomatic{
   publishDir "$results_dir/mg01_trimmomatic", mode: 'symlink'
   input:
   tuple(val(illumina_id), path(fastq))
-  path illuminaclip
+  val illuminaclip
   val slidingwindow
   val minlen
   

@@ -10,3 +10,4 @@ sudo docker pull staphb/seqkit:latest
 sudo docker pull nanozoo/krona:latest
 sudo docker pull staphb/multiqc:latest
 sudo docker pull staphb/trimmomatic:latest
+sudo docker pull staphb/samtools:latest
