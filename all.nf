@@ -4,6 +4,7 @@ include { CLEANFASTQ } from './workflows/cleanfastqwf.nf'
 include { KRAKEN2BRACKEN } from './workflows/kraken2brackenwf.nf'
 include { MULTIQC } from './workflows/multiqcwf.nf'
 include { HUMANN3 } from './workflows/humann3wf.nf'
+include { METAPHLAN } from './workflows/metaphlanwf.nf'
 
 
 workflow {
@@ -57,6 +58,15 @@ workflow {
    if(params.workflows.doHumann3){
       HUMANN3(ch_fastq_filtered)
       ch_humann3 = HUMANN3.out.ch_humann3
+   }else{
+      ch_humann3 = Channel.from([])
+   }
+
+   if(params.workflows.doMetaphlan){
+      METAPHLAN(ch_fastq_filtered)
+      ch_metaphlan = METAPHLAN.out.ch_metaphlan_merged
+   }else{
+      ch_metaphlan = Channel.from([])
    }
 
    //Call MultiQC workflow
