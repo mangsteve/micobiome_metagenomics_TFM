@@ -18,7 +18,7 @@ workflow MULTIQC{
   bowtie2_err = ch_alignment_output.map{it -> it[2]}.collect().ifEmpty([])
   kraken_err = ch_kraken2_output.map{it -> it[2]}.collect().ifEmpty([])
   bracken_err = ch_bracken_output.map{it -> it[4]}.collect().ifEmpty([])
-  metaphlan_err = ch_metaphlan_output.map{it -> it[1]}.collect().ifEmpty([])
+  metaphlan_err = ch_metaphlan.map{it -> it[1]}.collect().ifEmpty([])
 
   //Call multiQC process
   multiQC(params.multiQC.configyaml,
