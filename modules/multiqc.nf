@@ -15,6 +15,7 @@ process multiQC{
     path bowtie2_err
     path kraken_err
     path bracken_err
+    path metaphlan_err
 
   output:
   path("multiqc_report.html")

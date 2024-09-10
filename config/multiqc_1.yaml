@@ -36,6 +36,12 @@ top_modules:
       info: "Taxonomic read classification."
       path_filters:
        - "*.kraken2.report"
+ - "metaphlan" :
+      name: "Metaphlan"
+      info: "Metaphlan results."
+      path_filters:
+       - "*_metaphlan.txt"
+     
  - "fastqc":
       name: "FastQC Before Trimming - R1"
       info: "This section shows the module with different files"
