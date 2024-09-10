@@ -29,11 +29,8 @@ process doMetaphlan{
   '''
 
   stub:
-  '''
-  bwtout=!{illumina_id}_bowtie2.out
-  output=!{illumina_id}_metaphlan.txt
-  
-  touch $bwtout
-  touch $output
-  '''
+  """
+  touch $illumina_id'_bowtie2.out'
+  touch $illumina_id'_metaphlan.txt'
+  """
   }

@@ -20,7 +20,7 @@ process mergeMetaphlan{
 
   stub:
   """
-  echo $humann_results_list
+  echo $metaphlan_results_list
   touch humann3_merged.tsv
   """
   }
