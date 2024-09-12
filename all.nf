@@ -62,11 +62,22 @@ workflow {
       ch_humann3 = Channel.from([])
    }
 
+  //Call Metaphlan workflow
    if(params.workflows.doMetaphlan){
       METAPHLAN(ch_fastq_filtered)
-      ch_metaphlan = METAPHLAN.out.ch_metaphlan_merged
+      ch_metaphlan = METAPHLAN.out.ch_metaphlan
+      ch_metaphlan_merged = METAPHLAN.out.ch_metaphlan_merged
    }else{
       ch_metaphlan = Channel.from([])
+      ch_metaphlan_merged = Channel.from([])
+   }
+
+   //Call Centrifuge workflow
+   if (params.workflows.doCentrifuge) {
+      CENTRIFUGE(ch_fastq_filtered)
+      ch_centrifuge = CENTRIFUGE.out.ch_centrifuge
+   } else {
+      ch_centrifuge = Channel.from([])
    }
 
    //Call MultiQC workflow
@@ -77,7 +88,10 @@ workflow {
         ch_fastq_processed,
         ch_alignment_output,
         ch_kraken2_output,
-        ch_bracken_output
+        ch_bracken_output,
+        ch_metaphlan
+        ch_centrifuge // esto es una prueba 
+
       )
       ch_multiqc_out = MULTIQC.out.ch_multiqc_out
    }else{
