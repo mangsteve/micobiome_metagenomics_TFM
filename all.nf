@@ -5,7 +5,7 @@ include { KRAKEN2BRACKEN } from './workflows/kraken2brackenwf.nf'
 include { MULTIQC } from './workflows/multiqcwf.nf'
 include { HUMANN3 } from './workflows/humann3wf.nf'
 include { METAPHLAN } from './workflows/metaphlanwf.nf'
-
+include { cENTRIFUGE } from './workflows/centrifugewf.nf'
 
 workflow {
 
