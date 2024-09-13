@@ -1,4 +1,3 @@
-include { concatFastq } from '../modules/concatfastq'
 include { doCentrifuge } from '../modules/centrifuge'
 
 
@@ -8,9 +7,6 @@ workflow CENTRIFUGE {
         ch_fastq_filtered
 
     main:
-        concatFastq(ch_fastq_filtered)
-        ch_concat_fastq = concatFastq.out
-        .view{ "concat fastq output: $it" }
 
         doCentrifuge(
             params.doCentrifuge.centrifuge_db, 
