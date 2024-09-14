@@ -6,6 +6,7 @@ process alignBowtie2{
   cpus params.resources.alignBowtie2.cpus
   memory params.resources.alignBowtie2.mem
   queue params.resources.alignBowtie2.queue 
+  array params.resources.array_size
   clusterOptions params.resources.alignBowtie2.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10

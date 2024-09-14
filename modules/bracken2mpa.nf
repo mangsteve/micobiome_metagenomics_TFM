@@ -4,6 +4,7 @@ process braken2mpa{
   cpus params.resources.braken2mpa.cpus
   memory params.resources.braken2mpa.mem
   queue params.resources.braken2mpa.queue
+  array params.resources.array_size
   clusterOptions params.resources.braken2mpa.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10

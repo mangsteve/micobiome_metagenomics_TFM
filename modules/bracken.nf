@@ -4,6 +4,7 @@ process callBracken{
   cpus params.resources.callBracken.cpus
   memory params.resources.callBracken.mem
   queue params.resources.callBracken.queue
+  array params.resources.array_size
   clusterOptions params.resources.callBracken.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
