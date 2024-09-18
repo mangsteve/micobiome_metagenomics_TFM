@@ -19,4 +19,3 @@ git switch -c incluir_metaphlan  origin/feature/incluir_metaphlan
 git add <ficheros> 
 git commit -m "mensaje del commit"
 git push origin master # hacerlo desde gitkraken
-aaaaaaaaaaaaaaaaaaa

@@ -8,8 +8,7 @@ workflow CENTRIFUGE {
 
     main:
 
-        doCentrifuge(
-            params.doCentrifuge.centrifuge_db, 
+        doCentrifuge( 
             params.doCentrifuge.centrifuge_index,
             ch_fastq_filtered
         )

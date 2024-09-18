@@ -10,8 +10,7 @@ process doCentrifuge {
   publishDir "$results_dir/mg18_centrifuge", mode: 'symlink'
   
   input:
-    path centrifuge_db
-    val centrifuge_index
+    val centrifuge_index  //índice
     tuple(val(illumina_id), path(fastq_paired))
 
   output:
@@ -22,7 +21,7 @@ process doCentrifuge {
   report=!{illumina_id}_centrifuge_report.txt
   classification=!{illumina_id}_centrifuge_classification.txt
 
-  centrifuge -x !{centrifuge_db}/!{centrifuge_index} \
+  centrifuge -x !{centrifuge_index} \
     -1 !{fastq_paired[0]} \
     -2 !{fastq_paired[1]} \
     -p !{params.resources.doCentrifuge.cpus} \
