@@ -13,7 +13,7 @@
 ## SBATCH --mem 10G                                                                                            ##
 #################################################################################################################
 
-#SBATCH --job-name=test_nf
+#SBATCH --job-name=test_cf
 #SBATCH -o slurm.%N.%j.out
 #SBATCH -e slurm.%N.%j.err
 #SBATCH --qos=long
