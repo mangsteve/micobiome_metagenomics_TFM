@@ -12,7 +12,7 @@ process doCentrifuge {
   input:
     path centrifuge_db
     val centrifuge_index
-    tuple(val(illumina_id), path(fastq_merged))
+    tuple(val(illumina_id), path(fastq_paired))
 
   output:
     tuple(val(illumina_id), path('*_centrifuge_report.txt'), path('*_centrifuge_classification.txt'))
@@ -23,7 +23,8 @@ process doCentrifuge {
   classification=!{illumina_id}_centrifuge_classification.txt
 
   centrifuge -x !{centrifuge_db}/!{centrifuge_index} \
-    -U !{fastq_merged} \
+    -1 !{fastq_paired[0]} \
+    -2 !{fastq_paired[1]} \
     -p !{params.resources.doCentrifuge.cpus} \
     --report-file $report > $classification
   '''
@@ -34,3 +35,4 @@ process doCentrifuge {
   touch !{illumina_id}_centrifuge_classification.txt
   """
 }
+
