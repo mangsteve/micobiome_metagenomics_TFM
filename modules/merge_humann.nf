@@ -4,6 +4,7 @@ process mergeHumann{
   cpus params.resources.mergeHumann3.cpus
   memory params.resources.mergeHumann3.mem
   queue params.resources.mergeHumann3.queue
+  array params.resources.array_size
   clusterOptions params.resources.mergeHumann3.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10

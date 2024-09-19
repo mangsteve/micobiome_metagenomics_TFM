@@ -4,6 +4,7 @@ process concatFastq{
   cpus params.resources.concatFastq.cpus
   memory params.resources.concatFastq.mem
   queue params.resources.concatFastq.queue
+  array params.resources.array_size
   clusterOptions params.resources.concatFastq.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10

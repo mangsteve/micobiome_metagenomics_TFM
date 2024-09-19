@@ -4,6 +4,7 @@ process removeHumanReads{
   cpus params.resources.removeHumanReads.cpus
   memory params.resources.removeHumanReads.mem
   queue params.resources.removeHumanReads.queue
+  array params.resources.array_size
   clusterOptions params.resources.removeHumanReads.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10

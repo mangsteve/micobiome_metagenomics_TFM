@@ -5,6 +5,7 @@ process doHumann3{
   memory params.resources.doHumann3.mem
   queue params.resources.doHumann3.queue
   clusterOptions params.resources.doHumann3.clusterOptions
+  array params.resources.array_size
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
   publishDir "$results_dir/mg13_humann3", mode: 'symlink'

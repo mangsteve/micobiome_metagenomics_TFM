@@ -4,6 +4,7 @@ process callKraken2{
   cpus params.resources.callKraken2.cpus
   memory params.resources.callKraken2.mem
   queue params.resources.callKraken2.queue
+  array params.resources.array_size
   clusterOptions params.resources.callKraken2.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
