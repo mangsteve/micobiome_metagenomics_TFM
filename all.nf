@@ -11,7 +11,7 @@ workflow {
 
   
     ch_rawfastq = Channel.fromFilePairs(params.raw_fastq)
-    //.view{"FilePairs input: $it"}
+    .view{"FilePairs input: $it"}
 
     if (params.workflows.doCleanFastq) {
         CLEANFASTQ(ch_rawfastq)
