@@ -6,6 +6,7 @@ include { MULTIQC } from './workflows/multiqcwf.nf'
 include { HUMANN3 } from './workflows/humann3wf.nf'
 include { METAPHLAN } from './workflows/metaphlanwf.nf'
 include { CENTRIFUGE } from './workflows/centrifugewf.nf'
+include { MERGECENTRIFUGE } from './workflows/mergecentrifugewf.nf'
 
 workflow {
 
@@ -76,6 +77,12 @@ workflow {
         ch_centrifuge = Channel.from([])
     }
 
+    
+    if (params.workflows.doMergeCentrifuge) {
+        MERGECENTRIFUGE(ch_centrifuge_reports)
+        ch_merged_centrifuge = MERGECENTRIFUGE.out.ch_merged_centrifuge
+    }
+
     //Call MultiQC workflow
     if (params.workflows.doMultiQC) {
         MULTIQC(
@@ -92,4 +99,6 @@ workflow {
         print "Skipping MULTIQC."
         ch_multiqc_out = Channel.from([])
     }
+
+
 }
