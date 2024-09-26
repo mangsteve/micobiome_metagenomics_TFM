@@ -8,7 +8,7 @@ process mergeMetaphlan{
   clusterOptions params.resources.mergeMetaphlan.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/mg17_mergemetaphlan", mode: 'symlink'
+  publishDir "$results_dir/mg17_mergemetaphlan", mode: 'copy'
   input:
     path metaphlan_results_list
   output:
