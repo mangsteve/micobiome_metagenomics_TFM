@@ -24,4 +24,4 @@
 #Do this before executing sbatch
 module load anaconda #3_2022.10
 
-nextflow run all.nf -c config/run_samples_garnatxa_G4M_yeast.config -profile conda -resume -with-report report.html -with-dag pipeline_dag.html
+nextflow run all.nf -c config/run_samples_garnatxa_G4M_yeast.config -profile conda -with-report report.html -with-dag pipeline_dag.html
