@@ -6,7 +6,7 @@ include { MULTIQC } from './workflows/multiqcwf.nf'
 include { HUMANN3 } from './workflows/humann3wf.nf'
 include { METAPHLAN } from './workflows/metaphlanwf.nf'
 include { CENTRIFUGE } from './workflows/centrifugewf.nf'
-include { MERGECENTRIFUGE } from './workflows/mergecentrifugewf.nf'
+include { CLARK } from './workflows/clarkwf.nf'
 
 workflow {
 
@@ -78,10 +78,16 @@ workflow {
     }
 
     
-    if (params.workflows.doMergeCentrifuge) {
-        MERGECENTRIFUGE(ch_centrifuge_reports)
-        ch_merged_centrifuge = MERGECENTRIFUGE.out.ch_merged_centrifuge
+    //Call Clark workflow
+    if (params.workflows.doCLARKK) {
+        CLARKK(ch_rawfastq)
+        ch_clarkk_reports = CLARKK.out.ch_clarkk_reports
+    } else {
+        ch_clarkk_reports = Channel.from([])
     }
+
+    
+   
 
     //Call MultiQC workflow
     if (params.workflows.doMultiQC) {
