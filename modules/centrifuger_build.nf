@@ -14,14 +14,26 @@ process CentrifugerBuildDB{
     path taxonomy 
 
   output:
-    path ref_name
+    tuple(val(ref_name), path(ref_name))
   
   shell:
   '''
+  mkdir !{ref_name}
+
   mem=$(echo "!{params.resources.CentrifugerBuildDB.mem}" | cut -f1 -d' ')'G'
   centrifuger-build -t !{params.resources.CentrifugerBuildDB.cpus} \
     --conversion-table !{seqid2taxid} \
 	--taxonomy-tree !{taxonomy}/nodes.dmp --name-table !{taxonomy}/names.dmp \
-	-l !{file_list} -o !{ref_name} --build-mem $mem
+	-l !{file_list} -o !{ref_name}/!{ref_name} --build-mem $mem
+
+  
+  '''
+  stub:
+  '''
+  mkdir !{ref_name}
+  touch !{ref_name}/!{ref_name}1.cfr
+  touch !{ref_name}/!{ref_name}2.cfr
+  touch !{ref_name}/!{ref_name}3.cfr
+  touch !{ref_name}/!{ref_name}4.cfr
   '''
   }
