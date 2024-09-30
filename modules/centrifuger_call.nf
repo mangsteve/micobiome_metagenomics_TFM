@@ -17,6 +17,6 @@ process CentrifugerCall{
   
   shell:
   '''
-  centrifuger -1 !{fastq[1]} -2 !{fastq[1]} -x !{ref_dir} > !{sample_id}_!{ref_name}.cfgr.out 2> !{sample_id}_!{ref_name}.cfgr.err
+  centrifuger -1 !{fastq[1]} -2 !{fastq[1]} -x !{ref_dir}/!{ref_name} > !{sample_id}_!{ref_name}.cfgr.out 2> !{sample_id}_!{ref_name}.cfgr.err
   '''
   }
