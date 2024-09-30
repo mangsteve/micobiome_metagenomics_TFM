@@ -4,7 +4,7 @@ process mergeMetaphlan{
   cpus params.resources.mergeMetaphlan.cpus
   memory params.resources.mergeMetaphlan.mem
   queue params.resources.mergeMetaphlan.queue
-  array params.resources.array_size
+  //array params.resources.array_size
   clusterOptions params.resources.mergeMetaphlan.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10

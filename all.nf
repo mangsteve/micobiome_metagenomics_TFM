@@ -5,6 +5,7 @@ include { KRAKEN2BRACKEN } from './workflows/kraken2brackenwf.nf'
 include { MULTIQC } from './workflows/multiqcwf.nf'
 include { HUMANN3 } from './workflows/humann3wf.nf'
 include { METAPHLAN } from './workflows/metaphlanwf.nf'
+include { CENTRIFUGER } from './workflows/centrifugerwf.nf'
 
 
 workflow {
@@ -62,6 +63,7 @@ workflow {
       ch_humann3 = Channel.from([])
    }
 
+   // Call Metaphlan workflow
    if(params.workflows.doMetaphlan){
       METAPHLAN(ch_fastq_filtered)
       ch_metaphlan = METAPHLAN.out.ch_metaphlan_merged
@@ -69,8 +71,17 @@ workflow {
       ch_metaphlan = Channel.from([])
    }
 
-   //Call MultiQC workflow
+   // Call Centrifuger workflow
+   if(params.workflows.doCentrifuger){
+      CENTRIFUGER(ch_fastq_filtered)
+      ch_centrifuger_downloads = CENTRIFUGER.out.ch_centrifuger_downloads
+      ch_centrifuger_index = CENTRIFUGER.out.ch_centrifuger_index
+   }else{
+      ch_centrifuger_downloads = Channel.from([])
+      ch_centrifuger_index = Channel.from([])
+   }
 
+   //Call MultiQC workflow
    if(params.workflows.doMultiQC){
       MULTIQC(
         ch_fastqc,

@@ -4,7 +4,7 @@ process doMetaphlan{
   cpus params.resources.doMetaphlan.cpus
   memory params.resources.doMetaphlan.mem
   queue params.resources.doMetaphlan.queue
-  array params.resources.array_size
+  //array params.resources.array_size
   clusterOptions params.resources.doMetaphlan.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10

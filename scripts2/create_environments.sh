@@ -151,9 +151,14 @@ conda create -y --name mash-env python=3.10
 conda activate mash-env
 conda install -y -c bioconda mash
 
-## GANON
+## GANON -> doesnt work fine
 conda create -y --name ganon-env python=3.10
 conda activate ganon-env
-conda install -c bioconda -c conda-forge ganon
+conda install -y -c bioconda -c conda-forge ganon
 ganon build -g archaea bacteria fungi protozoa -d ArcBctFngPrt -c -t 30
 ganon build -g fungi protozoa -d FngPrt -c -t 30
+
+# CENTRIFUGER
+conda create -y --name centrifuger-env python=3.10
+conda activate centrifuger-env
+conda install -y -c conda-forge -c bioconda centrifuger
