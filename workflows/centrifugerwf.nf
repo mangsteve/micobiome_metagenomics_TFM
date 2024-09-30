@@ -2,6 +2,7 @@
 
 include { CentrifugerDownload } from '../modules/centrifuger_download'
 include { CentrifugerMakeFileList } from '../modules/centrifuger_filelist'
+include { CentrifugerBuildDB } from '../modules/centrifuger_build'
 
 workflow CENTRIFUGER {
   take:
@@ -31,29 +32,44 @@ workflow CENTRIFUGER {
       ch_centrifuger_downloads_branched.sequences.view{"CentrifugerDownload output sequences: $it"}
 
       // Create either one or several databases
-      if(params.CentrifugerDownload.merge_fasta){
+      if(params.CentrifugerMakeFileList.merge_dbs){
       ch_filelist_input = ch_centrifuger_downloads_branched.sequences
         .map{it -> it[2]}
         .collect()
-        .map{it -> ["mergeddb", it]}
+        .map{it -> [params.CentrifugerMakeFileList.merges_dbs_name, it]}
+      ch_seq2tax = 
+        ch_centrifuger_downloads_branched.sequences
+        .map{it -> it[3]}
+        .collect()
+        .map{it -> [params.CentrifugerMakeFileList.merges_dbs_name, it]}
+      ch_filelist_input = ch_filelist_input.join(ch_seq2tax) 
         .view{"CentrifugerMakeFileList input merged: $it"}
       }else{
         ch_filelist_input = ch_centrifuger_downloads_branched.sequences
-        .map{it -> [it[0], it[2]]}
+        .map{it -> [it[1], it[2], it[3]]}
         .view{"CentrifugerMakeFileList input separated: $it"}
       }
       CentrifugerMakeFileList(ch_filelist_input)
       ch_filelist_output = CentrifugerMakeFileList.out
+        .view{"CentrifugerMakeFileList output: $it"}
 
   }else{
     ch_centrifuger_downloads = Channel.from([])
     ch_filelist_output = Channel.from([])
   }
 
-
-  ch_centrifuger_index = Channel.from([])
+  if(params.CentrifugerDownload.do){
+    ch_centrifuger_index = CentrifugerBuildDB(
+                      ch_filelist_output,
+                      ch_centrifuger_downloads_branched.taxonomy.map{it -> it[2]}
+    )
+      .view{"CentrifugerBuildDB output: $it"}
+  }else{
+    ch_centrifuger_index =  Channel.from([])
+  }
 
   emit:
   ch_centrifuger_downloads
+  ch_filelist_output
   ch_centrifuger_index
 }
