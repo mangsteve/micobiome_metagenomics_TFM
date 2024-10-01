@@ -21,6 +21,7 @@ process CentrifugerBuildDB{
 
   mem=$(echo "!{params.resources.CentrifugerBuildDB.mem}" | cut -f1 -d' ')'G'
   centrifuger-build -t !{params.resources.CentrifugerBuildDB.cpus} \
+    !{params.CentrifugerBuildDB.options} \
     --conversion-table !{seqid2taxid} \
 	--taxonomy-tree !{taxonomy}/nodes.dmp --name-table !{taxonomy}/names.dmp \
 	-l !{file_list} -o !{ref_name}/!{ref_name} --build-mem $mem

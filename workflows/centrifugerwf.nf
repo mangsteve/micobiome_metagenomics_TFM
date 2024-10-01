@@ -66,10 +66,10 @@ workflow CENTRIFUGER {
     ch_centrifuger_downloads = Channel.from([])
     if(params.CentrifugerBuildDB.do){
       ch_filelist_output = Channel.from([
-        params.resources.CentrifugerBuildDB.index_name])
-        .concat(Channel.fromPath(params.resources.CentrifugerBuildDB.filelist))
-        .concat(Channel.fromPath(params.resources.CentrifugerBuildDB.seqid2taxid))
-        .concat(Channel.fromPath(params.resources.CentrifugerBuildDB.taxonomy))        
+        params.CentrifugerBuildDB.index_name])
+        .concat(Channel.fromPath(params.CentrifugerBuildDB.filelist))
+        .concat(Channel.fromPath(params.CentrifugerBuildDB.seqid2taxid))
+        .concat(Channel.fromPath(params.CentrifugerBuildDB.taxonomy))        
       .collect()
       //.map(it -> tuple(it[0], path(it[1]), path(it[3]), path(it[3])))
        .view{"CentrifugerBuildDB input (from files): $it"}
@@ -84,8 +84,8 @@ workflow CENTRIFUGER {
       .view{"CentrifugerBuildDB output: $it"}
   }else{
     ch_centrifuger_index =  Channel.from([
-      params.resources.CentrifugerCall.index_name,
-      params.resources.CentrifugerCall.index_path
+      params.CentrifugerCall.index_name,
+      params.CentrifugerCall.index_path
     ]).collect()
     .view{"Centrifuger input (from files): $it"}
   }
