@@ -4,7 +4,7 @@ process callKronaFromKraken2{
   cpus params.resources.callKronaFromKraken2.cpus
   memory params.resources.callKronaFromKraken2.mem
   queue params.resources.callKronaFromKraken2.queue
-  array params.resources.array_size
+  //array params.resources.array_size
   clusterOptions params.resources.callKronaFromKraken2.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
