@@ -10,8 +10,7 @@ process CentrifugerBuildDB{
   maxRetries 10
   publishDir "$results_dir/mg21_centrifuger_build", mode: 'symlink'
   input:
-    tuple(val(ref_name), path(file_list), path(seqid2taxid))
-    path taxonomy 
+    tuple(val(ref_name), path(file_list), path(seqid2taxid), path(taxonomy))
 
   output:
     tuple(val(ref_name), path(ref_name))
