@@ -24,4 +24,4 @@
 #Do this before executing sbatch
 module load anaconda #3_2022.10
 
-nextflow run all.nf -c config/run_samples_garnatxa_EVAMOUSE_1.config -profile conda -resume 0deafaf7-5d53-4835-bd7c-76b0752d060a
+nextflow run all.nf -c config/run_samples_garnatxa_EVAMOUSE_1.config -profile conda -resume
