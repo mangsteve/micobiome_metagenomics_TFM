@@ -69,6 +69,7 @@ workflow {
       ch_metaphlan = METAPHLAN.out.ch_metaphlan
       ch_metaphlan_merged = METAPHLAN.out.ch_metaphlan_merged
    }else{
+      print "Skipping METAPHLAN."
       ch_metaphlan = Channel.from([])
       ch_metaphlan_merged = Channel.from([])
    }

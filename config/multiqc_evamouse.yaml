@@ -38,7 +38,8 @@ top_modules:
        - "*.kraken2.report"
  - "metaphlan":
       name: "Metaphlan4"
-      path_filters:
+      top_n: 5
+      fn:
        - "*_metaphlan.txt"
  - "fastqc":
       name: "FastQC Before Trimming - R1"
