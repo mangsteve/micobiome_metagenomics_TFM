@@ -44,6 +44,12 @@ conda activate multiqc-env
 #conda install -y -c bioconda multiqc
 pip install multiqc
 
+
+conda create -y --name multiqc-env-v1.25.1 python=3.11 
+conda activate multiqc-env-v1.25.1
+conda install -y -c bioconda multiqc
+
+
 conda create -y --name seqtk-env python=3.10
 conda activate seqtk-env
 conda install -y -c bioconda seqtk pigz samtools
