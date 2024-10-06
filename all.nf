@@ -66,9 +66,11 @@ workflow {
    // Call Metaphlan workflow
    if(params.workflows.doMetaphlan){
       METAPHLAN(ch_fastq_filtered)
-      ch_metaphlan = METAPHLAN.out.ch_metaphlan_merged
+      ch_metaphlan = METAPHLAN.out.ch_metaphlan
+      ch_metaphlan_merged = METAPHLAN.out.ch_metaphlan_merged
    }else{
       ch_metaphlan = Channel.from([])
+      ch_metaphlan_merged = Channel.from([])
    }
 
    // Call Centrifuger workflow
@@ -88,7 +90,8 @@ workflow {
         ch_fastq_processed,
         ch_alignment_output,
         ch_kraken2_output,
-        ch_bracken_output
+        ch_bracken_output,
+        ch_metaphlan
       )
       ch_multiqc_out = MULTIQC.out.ch_multiqc_out
    }else{
