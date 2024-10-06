@@ -1,7 +1,13 @@
-custom_logo: "/home/mysanz/projects/PREDICOL_Adults_H0/metagen1/assets/Logo-IATA-CSIC.png"
+custom_logo: "/home/ysanz/G4M/metagen2/assets/Logo-IATA-CSIC.png"
 title: "Metagenomics"
 subtitle: "Quality Report"
-comment: "PREDICOL adultos tiempo inicial"
+comment: "Estudio de prueba para testar la pipeline"
+report_header_info:
+  - Contact E-mail: "carlos.mora@iata.csic.es"
+  - Application Type: "MGI’s DNBSEQTM microbial genome sequencing technology"
+  - Project Type: "MMHP"
+  - Sequencing Platform: "Ultra-high throughput DNBSEQ-T7 sequencer"
+  - Sequencing Setup: "2x150"
 extra_fn_clean_exts:
   - ".standard.kraken2.report"
   - ".standard"
@@ -15,20 +21,25 @@ extra_fn_clean_exts:
   - ".bracken.err"
   - ".standard.kraken2.report"
   - ".trimlog.out"
-  - "_"
+  - "_MKDN"
 top_modules:
  - "trimmomatic":
+      name: "Trimmomatic"
+      info: "Adapter sequence indentification, quality filtering and trimming."
       path_filters:
        - "*.trimlog.out"
  - "bowtie2":
-      name: "bowtie2 to remove human reads"
+      name: "Bowtie2"
+      info: "Used to remove human reads."
  - "kraken":
       name: "Kraken2"
+      info: "Taxonomic read classification."
       path_filters:
        - "*.kraken2.report"
  - "metaphlan":
       name: "Metaphlan4"
-      path_filters:
+      top_n: 5
+      fn:
        - "*_metaphlan.txt"
  - "fastqc":
       name: "FastQC Before Trimming - R1"

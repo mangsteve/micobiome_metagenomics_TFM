@@ -11,7 +11,7 @@ main:
     //ch_fastq_filtered.view{ "Humann3 input: $it" }
     concatFastq(ch_fastq_filtered)
     ch_concat_fastq = concatFastq.out
-        .view{ "concat fastq output: $it" }
+        //.view{ "concat fastq output: $it" }
 
     doMetaphlan(
             params.doMetaphlan.bowtie2db,
@@ -19,16 +19,16 @@ main:
             ch_concat_fastq
     )
     ch_metaphlan = doMetaphlan.out
-        .view{ "Metaphlan output: $it" }
+        //.view{ "Metaphlan output: $it" }
 
     ch_metaphlan_join = ch_metaphlan
         .map{it -> tuple( it[1])}
         .flatten()
         .collect()
-        .view{ "Metaphlan output join: $it" }
+        //.view{ "Metaphlan output join: $it" }
     mergeMetaphlan(ch_metaphlan_join)
     ch_metaphlan_merged = mergeMetaphlan.out
-        .view{ "Metaphlan merged output: $it" }
+        //.view{ "Metaphlan merged output: $it" }
 
 
 emit:
