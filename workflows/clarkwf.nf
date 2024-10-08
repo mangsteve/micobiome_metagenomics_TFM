@@ -1,16 +1,18 @@
-workflow CLARKK {
+include { doCLARK } from '../modules/clark'
+
+workflow CLARK {
     take:
         ch_fastq_paired
 
     main:
-        doCLARKK(
-            params.doCLARKK.clarkk_db,  // Base de datos CLARKK
-            ch_fastq_paired             // Pares de archivos FASTQ
+        doCLARK(
+            params.doCLARK.clark_db,  
+            ch_fastq_paired             
         )
-        ch_clarkk_reports = doCLARKK.out
-        ch_clarkk_reports.view { "CLARKK output: $it" }
+        ch_clark_reports = doCLARK.out
+        ch_clark_reports.view { "CLARK output: $it" }
 
     emit:
-        ch_clarkk_reports
+        ch_clark_reports
 }
 

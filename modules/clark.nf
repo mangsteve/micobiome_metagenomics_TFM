@@ -1,34 +1,34 @@
-process doCLARKK {
-  label 'mg19_clarkk'
-  conda params.doCLARKK.conda
-  cpus params.resources.doCLARKK.cpus
-  memory params.resources.doCLARKK.mem
-  queue params.resources.doCLARKK.queue
-  clusterOptions params.resources.doCLARKK.clusterOptions
+process doCLARK {
+  label 'mg19_clark'
+  conda params.doCLARK.conda
+  cpus params.resources.doCLARK.cpus
+  memory params.resources.doCLARK.mem
+  queue params.resources.doCLARK.queue
+  clusterOptions params.resources.doCLARK.clusterOptions
   errorStrategy { task.exitStatus in 1..2 ? 'retry' : 'ignore' }
   maxRetries 10
-  publishDir "$results_dir/mg18_clarkk", mode: 'symlink'
+  publishDir "$results_dir/mg19_clark", mode: 'symlink'
 
   input:
-    val clarkk_db  // Índice de CLARKK
+    val clark_db  // Índice de CLARKK
     tuple(val(illumina_id), path(fastq_paired))
 
   output:
-    tuple(val(illumina_id), path('*_clarkk_report.txt'))
+    tuple(val(illumina_id), path('*_clark_report.txt'))
 
   shell:
   '''
-  output=!{illumina_id}_clarkk_report.txt
+  output=!{illumina_id}_clark_report.txt
 
-  clark -k !{clarkk_db} \
+  clark -k !{clark_db} \
     --seq !{fastq_paired[0]} \
     --seq !{fastq_paired[1]} \
-    --threads !{params.resources.doCLARKK.cpus} \
+    --threads !{params.resources.doCLARK.cpus} \
     > $output
   '''
 
   stub:
   """
-  touch !{illumina_id}_clarkk_report.txt
+  touch !{illumina_id}_clark_report.txt
   """
 }
