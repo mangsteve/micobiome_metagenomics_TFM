@@ -7,6 +7,8 @@ include { HUMANN3 } from './workflows/humann3wf.nf'
 include { METAPHLAN } from './workflows/metaphlanwf.nf'
 include { CENTRIFUGE } from './workflows/centrifugewf.nf'
 include { CLARK } from './workflows/clarkwf.nf'
+include { MASH_KALLISTO } from './workflows/mashKalistowf.nf'
+
 
 workflow {
 
@@ -77,17 +79,29 @@ workflow {
         ch_centrifuge = Channel.from([])
     }
 
-    
-    //Call Clark workflow
-    if (params.workflows.doCLARKK) {
-        CLARKK(ch_rawfastq)
-        ch_clarkk_reports = CLARKK.out.ch_clarkk_reports
+
+    if (params.workflows.doCLARK) {
+        doCLARK(
+            params.doCLARK.clark_db,
+            ch_rawfastq
+        )
+        ch_clark_reports = doCLARK.out
     } else {
-        ch_clarkk_reports = Channel.from([])
+        ch_clark_reports = Channel.from([])
     }
 
+
+    if (params.workflows.doMashKallistoPipeline) {
+        // Llamar al workflow específico para Mash Kallisto
+        MASH_KALLISTO(
+            ch_rawfastq,  // Secuencias paired-end
+            mash_output_file  // Archivo de salida de Mash
+        )
+        ch_mash_kallisto_output = MASH_KALLISTO.out
+    } else {
+        ch_mash_kallisto_output = Channel.from([])
+    }
     
-   
 
     //Call MultiQC workflow
     if (params.workflows.doMultiQC) {
